@@ -1,9 +1,9 @@
 {
 	"name": "notes-app-backend",
 	"version": "1.0.0",
-	"main": "index.js",
+	"main": "src/app.js",
 	"scripts": {
-		"start": "nodemon index.js",
+		"start": "nodemon src/app.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "Muhammad Fikri Ardiayansyah",
