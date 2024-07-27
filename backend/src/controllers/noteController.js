@@ -32,9 +32,19 @@ const deleteNote = asyncHandler(async (req, res) => {
 	return handleResponse(res, 200, "Note deleted successfully");
 });
 
+const pinnedNote = asyncHandler(async (req, res) => {
+	const userId = req.user._id;
+	const noteId = req.params.noteId;
+	const { isPinned } = req.body;
+	const note = await NoteService.pinnedNote(noteId, userId, isPinned);
+
+	return handleResponse(res, 200, "Note updated successfully", note);
+});
+
 module.exports = {
 	createNote,
 	editNote,
 	getAllNotes,
 	deleteNote,
+	pinnedNote,
 };

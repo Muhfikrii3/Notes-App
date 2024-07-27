@@ -38,9 +38,21 @@ const deleteNote = async (noteId, userId) => {
 	return note;
 };
 
+const pinnedNote = async (noteId, userId, isPinned) => {
+	const note = await Note.findOne({ _id: noteId, userId });
+	if (!note) {
+		throw createError(404, "Note not found");
+	}
+
+	note.isPinned = isPinned;
+
+	return await note.save();
+};
+
 module.exports = {
 	createNote,
 	editNote,
 	getAllNotes,
 	deleteNote,
+	pinnedNote,
 };

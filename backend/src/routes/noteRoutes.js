@@ -31,4 +31,11 @@ router.delete(
 	asyncHandler(noteController.deleteNote)
 );
 
+router.put(
+	"/update-note-pinned/:noteId",
+	authenticateToken,
+	validate("notePinnedValidation"),
+	asyncHandler(noteController.pinnedNote)
+);
+
 module.exports = router;

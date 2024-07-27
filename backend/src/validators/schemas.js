@@ -15,6 +15,9 @@ const schemas = {
 		content: Joi.string().required(),
 		tags: Joi.array().items(Joi.string()).optional(),
 	}),
+	notePinnedValidation: Joi.object({
+		isPinned: Joi.boolean().required(),
+	}),
 };
 
 module.exports = schemas;
