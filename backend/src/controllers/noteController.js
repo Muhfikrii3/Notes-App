@@ -24,8 +24,17 @@ const getAllNotes = asyncHandler(async (req, res) => {
 	return handleResponse(res, 200, "All notes retrieved successfuly", note);
 });
 
+const deleteNote = asyncHandler(async (req, res) => {
+	const userId = req.user._id;
+	const noteId = req.params.noteId;
+	await NoteService.deleteNote(noteId, userId);
+
+	return handleResponse(res, 200, "Note deleted successfully");
+});
+
 module.exports = {
 	createNote,
 	editNote,
 	getAllNotes,
+	deleteNote,
 };

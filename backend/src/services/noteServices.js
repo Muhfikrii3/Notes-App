@@ -29,8 +29,18 @@ const getAllNotes = async (userId) => {
 	return note;
 };
 
+const deleteNote = async (noteId, userId) => {
+	const note = await Note.findOneAndDelete({ _id: noteId, userId });
+	if (!note) {
+		throw createError(404, "Note not found");
+	}
+
+	return note;
+};
+
 module.exports = {
 	createNote,
 	editNote,
 	getAllNotes,
+	deleteNote,
 };

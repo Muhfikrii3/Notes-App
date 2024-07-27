@@ -25,4 +25,10 @@ router.get(
 	asyncHandler(noteController.getAllNotes)
 );
 
+router.delete(
+	"/delete-note/:noteId",
+	authenticateToken,
+	asyncHandler(noteController.deleteNote)
+);
+
 module.exports = router;
