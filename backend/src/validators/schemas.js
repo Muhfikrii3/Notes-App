@@ -1,16 +1,16 @@
 const Joi = require("joi");
 
 const schemas = {
-	createAccount: Joi.object({
+	registrationValidation: Joi.object({
 		fullName: Joi.string().required(),
 		email: Joi.string().email().required(),
 		password: Joi.string().min(6).required(),
 	}),
-	login: Joi.object({
+	loginValidation: Joi.object({
 		email: Joi.string().email().required(),
 		password: Joi.string().min(6).required(),
 	}),
-	note: Joi.object({
+	noteValidation: Joi.object({
 		title: Joi.string().required(),
 		content: Joi.string().required(),
 		tags: Joi.array().items(Joi.string()).optional(),

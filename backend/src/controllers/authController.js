@@ -1,69 +1,44 @@
-const User = require("../models/user.model");
-const jwt = require("jsonwebtoken");
-const config = require("../config/config");
+const { registration, login } = require("../services/auth.services");
+const { handleResponse } = require("../utils/response");
+const asyncHandler = require("../utils/asyncHandler");
+const {
+	registrationValidation,
+	loginValidation,
+} = require("../validators/schemas");
 
-exports.createAccount = async (req, res, next) => {
-	try {
-		const { fullName, email, password } = req.body;
-		const existingUser = await User.findOne({ email });
-
-		if (existingUser) {
-			return res
-				.status(200)
-				.json({ error: false, message: "User already exist" });
-		}
-
-		const user = new User({ fullName, email, password });
-		await user.save();
-
-		const accessToken = jwt.sign(
-			{ userId: user._id },
-			config.accessTokenSecret,
-			{ expiresIn: "3600m" }
-		);
-
-		return res.json({
-			error: false,
-			message: "Registration Successful",
-			user,
-			accessToken,
-		});
-	} catch (error) {
-		next(error);
+const registrationUser = asyncHandler(async (req, res) => {
+	const { error, value } = registrationValidation.validate(req.body);
+	if (error) {
+		return res
+			.status(400)
+			.json({ error: true, message: error.details[0].message });
 	}
-};
 
-exports.login = async (req, res, next) => {
-	try {
-		const { email, password } = req.body;
-		const user = await User.findOne({ email });
+	const { user, accessToken } = await registration(value);
 
-		if (!user) {
-			return res.status(400).json({
-				error: true,
-				message: "User not found",
-			});
-		}
+	return handleResponse(res, 201, "Registration Successful", {
+		user,
+		accessToken,
+	});
+});
 
-		const isMatch = await user.comparePassword(password);
-		if (isMatch) {
-			const accessToken = jwt.sign(
-				{ userId: user._id },
-				config.accessTokenSecret,
-				{ expiresIn: "3600m" }
-			);
-			return res.json({
-				error: false,
-				message: "Login Successful",
-				email,
-				accessToken,
-			});
-		} else {
-			return res
-				.status(400)
-				.json({ error: true, message: "Credential Invalid" });
-		}
-	} catch (error) {
-		next(error);
+const loginUser = asyncHandler(async (req, res) => {
+	const { error, value } = loginValidation.validate(req.body);
+	if (error) {
+		return res
+			.status(400)
+			.json({ error: true, message: error.details[0].message });
 	}
+
+	const { email, accessToken } = await login(value);
+
+	return handleResponse(res, 201, "Login Successful", {
+		email,
+		accessToken,
+	});
+});
+
+module.exports = {
+	registrationUser,
+	loginUser,
 };

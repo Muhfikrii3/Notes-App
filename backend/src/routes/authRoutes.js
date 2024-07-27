@@ -1,21 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
-const noteController = require("../controllers/noteController");
 const validate = require("../middleware/validation");
 const { authenticateToken } = require("../utils/utilities");
+const asyncHandler = require("../utils/asyncHandler");
 
 router.post(
-	"/create-account",
-	validate("createAccount"),
-	authController.createAccount
+	"/registrasi",
+	validate("registrationValidation"),
+	asyncHandler(authController.registrationUser)
 );
-router.post("/login", validate("login"), authController.login);
 router.post(
-	"/notes",
-	authenticateToken,
-	validate("note"),
-	noteController.createNote
+	"/login",
+	validate("loginValidation"),
+	asyncHandler(authController.loginUser)
 );
 
 router.get("/protected-route", authenticateToken, (req, res) => {
