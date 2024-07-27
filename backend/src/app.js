@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const config = require("./config/config");
 const authRoutes = require("./routes/authRoutes");
+const noteRoutes = require("./routes/noteRoutes");
 const errorHandler = require("./middleware/errorHandler");
 const morgan = require("morgan");
 
@@ -10,7 +11,8 @@ const app = express();
 app.use(express.json());
 app.use(morgan("combined"));
 
-app.use("/api", authRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/notes", noteRoutes);
 
 app.use(errorHandler);
 

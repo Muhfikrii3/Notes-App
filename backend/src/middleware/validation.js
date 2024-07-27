@@ -8,12 +8,12 @@ module.exports = (schemaName) => {
 			return next(createError(500, "Schema not found"));
 		}
 
-		const { error } = schema.validate(req.body);
+		const { error, value } = schema.validate(req.body);
 		if (error) {
 			return next(createError(400, error.details[0].message));
 		}
 
-		req.validateBody = value;
+		req.validatedBody = value;
 		next();
 	};
 };

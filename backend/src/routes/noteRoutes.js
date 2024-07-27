@@ -8,8 +8,15 @@ const asyncHandler = require("../utils/asyncHandler");
 router.post(
 	"/add-note",
 	authenticateToken,
-	validate("note"),
+	validate("noteValidation"),
 	asyncHandler(noteController.createNote)
+);
+
+router.put(
+	"/:noteId",
+	authenticateToken,
+	validate("noteValidation"),
+	asyncHandler(noteController.editNote)
 );
 
 module.exports = router;
