@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login/Login";
+import SignUp from "./pages/SignUp/signUp";
 
 const routes = (
 	<Router>
 		<Routes>
-			<Route path="/" exact element={<Login />} />
+			<Route path="/login" exact element={<Login />} />
+			<Route path="/signUp" exact element={<SignUp />} />
 		</Routes>
 	</Router>
 );
