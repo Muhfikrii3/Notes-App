@@ -1,10 +1,10 @@
 const Note = require("../models/noteModel");
 const createError = require("http-errors");
 
-const createNote = async (noteData, userId) => {
+const createNote = async (userId, noteData) => {
 	const note = new Note({
-		...noteData,
 		userId,
+		...noteData,
 	});
 
 	return await note.save();
@@ -23,7 +23,14 @@ const editNote = async (noteId, userId, updateData) => {
 	return await note.save();
 };
 
+const getAllNotes = async (userId) => {
+	const note = await Note.find({ userId }).sort({ isPinned: -1 });
+
+	return note;
+};
+
 module.exports = {
 	createNote,
 	editNote,
+	getAllNotes,
 };

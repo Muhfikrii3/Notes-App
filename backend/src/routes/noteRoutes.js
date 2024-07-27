@@ -19,4 +19,10 @@ router.put(
 	asyncHandler(noteController.editNote)
 );
 
+router.get(
+	"/get-all-notes",
+	authenticateToken,
+	asyncHandler(noteController.getAllNotes)
+);
+
 module.exports = router;
