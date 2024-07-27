@@ -1,25 +1,14 @@
-const Note = require("../models/note.model");
+const NoteService = require("../services/note.services");
+const { handleResponse } = require("../utils/response");
+const asyncHandler = require("../utils/asyncHandler");
 
-exports.createNote = async (req, res, next) => {
-	try {
-		const { title, content, tags } = req.body;
-		const { user } = req.user;
+const createNote = asyncHandler(async (req, res) => {
+	const { user } = req.user;
+	const note = await NoteService.createNote(req.validateBody, user._id);
 
-		const note = new Note({
-			title,
-			content,
-			tags: tags || [],
-			userId: user._id,
-		});
+	return handleResponse(res, 201, "Note added successfully", note);
+});
 
-		await note.save();
-
-		return res.json({
-			error: false,
-			note,
-			message: "Note added successfully",
-		});
-	} catch (error) {
-		next(error);
-	}
+module.exports = {
+	createNote,
 };
