@@ -1,21 +1,19 @@
 const schemas = require("../validators/schemas");
+const createError = require("http-errors");
 
 module.exports = (schemaName) => {
-	return (req, res, next) => {
+	return (req, _, next) => {
 		const schema = schemas[schemaName];
 		if (!schema) {
-			return res
-				.status(500)
-				.json({ error: true, message: "Schema not found" });
+			return next(createError(500, "Schema not found"));
 		}
 
 		const { error } = schema.validate(req.body);
 		if (error) {
-			return res
-				.status(400)
-				.json({ error: true, message: error.details[0].message });
+			return next(createError(400, error.details[0].message));
 		}
 
+		req.validateBody = value;
 		next();
 	};
 };
