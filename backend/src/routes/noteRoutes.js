@@ -13,7 +13,7 @@ router.post(
 );
 
 router.put(
-	"/:noteId",
+	"/edit-note/:noteId",
 	authenticateToken,
 	validate("noteValidation"),
 	asyncHandler(noteController.editNote)

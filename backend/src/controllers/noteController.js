@@ -10,13 +10,9 @@ const createNote = asyncHandler(async (req, res) => {
 });
 
 const editNote = asyncHandler(async (req, res) => {
-	const { user } = req.user;
+	const userId = req.user._id;
 	const noteId = req.params.noteId;
-	const note = await NoteService.editNote(
-		noteId,
-		user._id,
-		req.validatedBody
-	);
+	const note = await NoteService.editNote(noteId, userId, req.validatedBody);
 
 	return handleResponse(res, 200, "Note updated successfully", note);
 });
