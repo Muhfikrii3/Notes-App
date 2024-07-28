@@ -69,6 +69,24 @@ const Home = () => {
 		}
 	};
 
+	const pinnedNote = async (data) => {
+		const noteId = data._id;
+		try {
+			const response = await axiosInstance.put(
+				"api/notes/update-note-pinned/" + noteId,
+				{
+					isPinned: !data.isPinned,
+				}
+			);
+
+			if (response.data && response.data.data) {
+				getAllNotes();
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	useEffect(() => {
 		getAllNotes();
 		getUserInfo();
@@ -91,7 +109,7 @@ const Home = () => {
 							isPinned={item.isPinned}
 							onEdit={() => handleEdit(item)}
 							onDelete={() => deleteNote(item)}
-							onPinNote={() => {}}
+							onPinNote={() => pinnedNote(item)}
 						/>
 					))}
 				</div>
