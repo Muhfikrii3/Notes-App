@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import NoteCards from "../../components/Cards/NoteCards";
 import Navbar from "../../components/Navbar/Navbar";
 import { MdAdd } from "react-icons/md";
@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import AddEditNote from "./AddEditNote";
 import Modal from "react-modal";
+import useEffectOnce from "../../hooks/customHook";
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -87,7 +88,7 @@ const Home = () => {
 		}
 	};
 
-	useEffect(() => {
+	useEffectOnce(() => {
 		getAllNotes();
 		getUserInfo();
 		return () => {};

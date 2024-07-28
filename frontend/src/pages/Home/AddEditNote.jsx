@@ -91,8 +91,8 @@ const AddEditNote = ({ noteData, type, getAllNotes, onClose }) => {
 				<label className="input-label">TITLE</label>
 				<input
 					type="text"
-					className="text-2xl text-slate-950 outline-none"
-					placeholder="Go To Gym At 5"
+					className="text-2xl text-slate-950 outline-none bg-slate-50 p-2 py-1 rounded"
+					placeholder="Title"
 					value={title}
 					onChange={({ target }) => setTitle(target.value)}
 				/>
