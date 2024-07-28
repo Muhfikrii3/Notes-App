@@ -18,6 +18,10 @@ const Home = () => {
 		data: null,
 	});
 
+	const handleEdit = (noteDetails) => {
+		setOpenAddEditModal({ isShow: true, data: noteDetails, type: "edit" });
+	};
+
 	const getUserInfo = async () => {
 		try {
 			const response = await axiosInstance.get("/api/user/get-user");
@@ -44,6 +48,27 @@ const Home = () => {
 		}
 	};
 
+	const deleteNote = async (data) => {
+		const noteId = data._id;
+		try {
+			const response = await axiosInstance.delete(
+				"api/notes/delete-note/" + noteId
+			);
+
+			if (response.data && !response.data.error) {
+				getAllNotes();
+			}
+		} catch (error) {
+			if (
+				error.response &&
+				error.response.data &&
+				error.response.data.message
+			) {
+				console.log("An unexpected error occurred. Please try again.");
+			}
+		}
+	};
+
 	useEffect(() => {
 		getAllNotes();
 		getUserInfo();
@@ -56,7 +81,7 @@ const Home = () => {
 
 			<div className="container mx-auto">
 				<div className="grid grid-cols-3 gap-4 mt-8">
-					{allNotes.map((item, index) => {
+					{allNotes.map((item) => (
 						<NoteCards
 							key={item._id}
 							title={item.title}
@@ -64,15 +89,15 @@ const Home = () => {
 							content={item.content}
 							tags={item.tags}
 							isPinned={item.isPinned}
-							onEdit={() => {}}
-							onDelete={() => {}}
+							onEdit={() => handleEdit(item)}
+							onDelete={() => deleteNote(item)}
 							onPinNote={() => {}}
-						/>;
-					})}
+						/>
+					))}
 				</div>
 			</div>
 			<button
-				className="w-16 h-16 flex items-center justify-center rounded-2xl bg-primary hover:bg-blue-600 absolute right-10 buttom-10"
+				className="w-14 h-14 flex items-center justify-center rounded-2xl bg-primary hover:bg-blue-600 absolute right-10 bottom-10"
 				onClick={() => {
 					setOpenAddEditModal({
 						isShow: true,
@@ -81,7 +106,7 @@ const Home = () => {
 					});
 				}}
 			>
-				<MdAdd className="text-[32] text-white" />
+				<MdAdd className="size-6 text-white" />
 			</button>
 			<Modal
 				isOpen={openAddEditModal.isShow}
