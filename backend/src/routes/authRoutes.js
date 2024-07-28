@@ -6,7 +6,7 @@ const { authenticateToken } = require("../utils/utilities");
 const asyncHandler = require("../utils/asyncHandler");
 
 router.post(
-	"/registrasi",
+	"/signup",
 	validate("registrationValidation"),
 	asyncHandler(authController.registrationUser)
 );
