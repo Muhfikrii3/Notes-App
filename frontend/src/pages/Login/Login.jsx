@@ -27,14 +27,14 @@ const Login = () => {
 		setError("");
 
 		try {
-			const response = await axiosInstance.post("/login", {
+			const response = await axiosInstance.post("/api/auth/login", {
 				email: email,
 				password: password,
 			});
 
-			if (response.data && response.data.accessToken) {
-				localStorage.setItem("token", response.data.accessToken);
-				navigate("/");
+			if (response.data.data && response.data.data.accessToken) {
+				localStorage.setItem("token", response.data.data.accessToken);
+				navigate("/dashboard");
 			}
 		} catch (error) {
 			if (
