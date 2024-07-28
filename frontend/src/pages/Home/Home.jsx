@@ -7,6 +7,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import AddEditNote from "./AddEditNote";
 import Modal from "react-modal";
 import useEffectOnce from "../../hooks/customHook";
+import Toast from "../../components/ToastMessage/Toast";
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -19,8 +20,29 @@ const Home = () => {
 		data: null,
 	});
 
+	const [toatsMessage, setToastMessage] = useState({
+		isShow: false,
+		message: "",
+		type: "add",
+	});
+
 	const handleEdit = (noteDetails) => {
 		setOpenAddEditModal({ isShow: true, data: noteDetails, type: "edit" });
+	};
+
+	const toastMessage = (message, type) => {
+		setToastMessage({
+			isShow: true,
+			message,
+			type,
+		});
+	};
+
+	const handleCloseToast = () => {
+		setToastMessage({
+			isShow: false,
+			message: "",
+		});
 	};
 
 	const getUserInfo = async () => {
@@ -57,6 +79,7 @@ const Home = () => {
 			);
 
 			if (response.data && !response.data.error) {
+				toastMessage("Note Deleted Successfully", "delete");
 				getAllNotes();
 			}
 		} catch (error) {
@@ -81,6 +104,7 @@ const Home = () => {
 			);
 
 			if (response.data && response.data.data) {
+				toastMessage("Note Updated Successfully");
 				getAllNotes();
 			}
 		} catch (error) {
@@ -149,8 +173,15 @@ const Home = () => {
 						});
 					}}
 					getAllNotes={getAllNotes}
+					toastMessage={toastMessage}
 				/>
 			</Modal>
+			<Toast
+				isShow={toatsMessage.isShow}
+				message={toatsMessage.message}
+				type={toatsMessage.type}
+				onClose={handleCloseToast}
+			/>
 		</>
 	);
 };
