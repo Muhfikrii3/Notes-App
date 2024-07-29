@@ -8,6 +8,8 @@ import AddEditNote from "./AddEditNote";
 import Modal from "react-modal";
 import useEffectOnce from "../../hooks/customHook";
 import Toast from "../../components/ToastMessage/Toast";
+import EmptyCard from "../../components/EmptyCard/EmptyCard";
+import AddNotesImg from "../../assets/images/add-notes.svg";
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -123,21 +125,28 @@ const Home = () => {
 			<Navbar userInfo={userInfo} />
 
 			<div className="container mx-auto">
-				<div className="grid grid-cols-3 gap-4 mt-8">
-					{allNotes.map((item) => (
-						<NoteCards
-							key={item._id}
-							title={item.title}
-							date={item.createdOn}
-							content={item.content}
-							tags={item.tags}
-							isPinned={item.isPinned}
-							onEdit={() => handleEdit(item)}
-							onDelete={() => deleteNote(item)}
-							onPinNote={() => pinnedNote(item)}
-						/>
-					))}
-				</div>
+				{allNotes.length > 0 ? (
+					<div className="grid grid-cols-3 gap-4 mt-8">
+						{allNotes.map((item) => (
+							<NoteCards
+								key={item._id}
+								title={item.title}
+								date={item.createdOn}
+								content={item.content}
+								tags={item.tags}
+								isPinned={item.isPinned}
+								onEdit={() => handleEdit(item)}
+								onDelete={() => deleteNote(item)}
+								onPinNote={() => pinnedNote(item)}
+							/>
+						))}
+					</div>
+				) : (
+					<EmptyCard
+						imgSrc={AddNotesImg}
+						message={`Start creating your first note! Click the '+' button to jot down your thoughts, ideas, and reminders. Let's get started!`}
+					/>
+				)}
 			</div>
 			<button
 				className="w-14 h-14 flex items-center justify-center rounded-2xl bg-primary hover:bg-blue-600 absolute right-10 bottom-10"
